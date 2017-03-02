@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DumpyLyceum</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="offline_text" translatable="false">You haven\'t network connection. Please connect to WIFI/3g/4g</string>
+</resources>
