@@ -5,17 +5,26 @@
         <item
             android:id="@+id/nav_news"
             android:icon="@drawable/bulletinboard"
-            android:title="News"
+            android:title="Новости"
             android:checked="true"/>
         <item
             android:id="@+id/nav_weather"
             android:icon="@drawable/weather_cloud"
-            android:title="Weather" />
+            android:title="Погода" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Settings" />
+            android:title="Настройки" />
 
     </group>
-
+    <item android:title="Ссылки">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/href_cite"
+                    android:icon="@drawable/access_point"
+                    android:title="Сайт лицея" />
+            </group>
+        </menu>
+    </item>
 </menu>

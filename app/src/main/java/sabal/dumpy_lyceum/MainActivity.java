@@ -1,5 +1,7 @@
 package sabal.dumpy_lyceum;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             transaction.replace(R.id.sample_content_fragment, fragment);
             transaction.commit();
         }
+
     }
 
 
@@ -56,28 +58,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
-        Class fragmentClass = NewsFragment.class;
+        Class fragmentClass = null;
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         switch (menuItem.getItemId()) {
             case R.id.nav_news:
                 fragmentClass = NewsFragment.class;
-                mDrawer.closeDrawers();
-                Toast.makeText(this, "news", Toast.LENGTH_SHORT).show();
+                drawer.closeDrawer(GravityCompat.START);
+                menuItem.setChecked(true);
+                setTitle(menuItem.getTitle());
+                //Toast.makeText(this, "news", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_weather:
                 fragmentClass = WeatherFragment.class;
-                mDrawer.closeDrawers();
-                Toast.makeText(this, "weather", Toast.LENGTH_SHORT).show();
+                drawer.closeDrawer(GravityCompat.START);
+                menuItem.setChecked(true);
+                setTitle(menuItem.getTitle());
+                //Toast.makeText(this, "weather", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_settings:
-                mDrawer.closeDrawers();
-                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
+                fragmentClass = null;
+                drawer.closeDrawer(GravityCompat.START);
+
+                //Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.href_cite:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://lyceum.nstu.ru"));
+                startActivity(browserIntent);
+                break;
+            default:
+                fragmentClass = NewsFragment.class;
+                menuItem.setChecked(true);
+                setTitle(menuItem.getTitle());
                 break;
         }
         try {
             //fragment = (Fragment) fragmentClass.newInstance();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.sample_content_fragment, (android.support.v4.app.Fragment) fragmentClass.newInstance()).commit();
-            Toast.makeText(this, "replaced", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "replaced", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -86,12 +104,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
+
         // Close the navigation drawer
         mDrawer.closeDrawers();
-        mDrawer.openDrawer(GravityCompat.START);
         return true;
     }
 

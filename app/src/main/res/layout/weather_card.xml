@@ -8,7 +8,7 @@
     android:paddingRight="16dp">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cv"
+        android:id="@+id/weather_cv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp">
@@ -33,16 +33,6 @@
                 android:layout_below="@+id/weather_title"
                 android:text="Text" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/new_date"
-                android:layout_alignParentTop="false"
-                android:layout_alignParentEnd="false"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="false"
-                android:layout_alignTop="@+id/weather_text"
-                android:layout_marginTop="24dp" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

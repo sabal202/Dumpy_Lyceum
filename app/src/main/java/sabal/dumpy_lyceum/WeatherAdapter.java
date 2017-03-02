@@ -10,20 +10,20 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewViewHolder> {
+public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherHolder> {
     private static final String TAG = "CustomAdapter";
 
-    private List<New> news = new ArrayList<New>();
+    private List<GetDTO> news = new ArrayList<GetDTO>();
 
-    public static class NewViewHolder extends RecyclerView.ViewHolder {
+    public static class WeatherHolder extends RecyclerView.ViewHolder {
         CardView cv;
         TextView newTitle;
         TextView newText;
         //TextView newDate;
 
-        NewViewHolder(View itemView) {
+        WeatherHolder(View itemView) {
             super(itemView);
-            cv = (CardView) itemView.findViewById(R.id.cv);
+            cv = (CardView) itemView.findViewById(R.id.weather_cv);
             newTitle = (TextView) itemView.findViewById(R.id.weather_title);
             newText = (TextView) itemView.findViewById(R.id.weather_text);
             //newDate = (TextView)itemView.findViewById(R.id.new_date);
@@ -31,7 +31,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewViewHolder> {
     }
 
 
-    RVAdapter(List<New> news) {
+    WeatherAdapter(List<GetDTO> news) {
         this.news = news;
     }
 
@@ -41,20 +41,20 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewViewHolder> {
     }
 
     @Override
-    public NewViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, viewGroup, false);
-        final NewViewHolder holder = new NewViewHolder(v);
+    public WeatherAdapter.WeatherHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.weather_card, viewGroup, false);
+        final WeatherAdapter.WeatherHolder holder = new WeatherAdapter.WeatherHolder(v);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(NewViewHolder newViewHolder, int i) {
-        newViewHolder.newTitle.setText(news.get(i).title);
-        newViewHolder.newText.setText(news.get(i).content);
+    public void onBindViewHolder(WeatherAdapter.WeatherHolder newViewHolder, int i) {
+        newViewHolder.newTitle.setText("Weather");
+        newViewHolder.newText.setText("Humidity:   "+String.valueOf((int) news.get(i).humidity) + "\nTemperature:   " + String.valueOf(news.get(i).weather));
         //newViewHolder.newDate.setText("03.03.2017");
     }
 
-    public void setData(List<New> data) {
+    public void setData(List<GetDTO> data) {
         this.news = data;
     }
 
