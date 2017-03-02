@@ -106,7 +106,9 @@ public class NewsFragment extends Fragment {
 
     private void initializeAdapter() {
         adapter = new RVAdapter(news);
+        adapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(adapter);
+
     }
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {

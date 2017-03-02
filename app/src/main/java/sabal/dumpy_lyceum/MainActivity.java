@@ -2,7 +2,6 @@ package sabal.dumpy_lyceum;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -56,30 +56,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
-        Fragment fragment = null;
         Class fragmentClass = NewsFragment.class;
         switch (menuItem.getItemId()) {
             case R.id.nav_news:
                 fragmentClass = NewsFragment.class;
                 mDrawer.closeDrawers();
+                Toast.makeText(this, "news", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_weather:
                 fragmentClass = WeatherFragment.class;
                 mDrawer.closeDrawers();
+                Toast.makeText(this, "weather", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_settings:
                 mDrawer.closeDrawers();
+                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
                 break;
         }
         try {
-            fragment = (Fragment) fragmentClass.newInstance();
+            //fragment = (Fragment) fragmentClass.newInstance();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.sample_content_fragment, (android.support.v4.app.Fragment) fragmentClass.newInstance()).commit();
+            Toast.makeText(this, "replaced", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.sample_content_fragment, fragment).commit();
+
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);

@@ -17,6 +17,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewViewHolder> {
     private static final String TAG = "CustomAdapter";
     CardView cv;
     private List<New> news;
+
+
     public static class NewViewHolder extends RecyclerView.ViewHolder {
 
 
@@ -47,7 +49,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewViewHolder> {
     public NewViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, viewGroup, false);
         cv = (CardView) viewGroup.findViewById(R.id.cv);
-        return new NewViewHolder(cv);
+        return new NewViewHolder(v);
     }
 
     @Override
