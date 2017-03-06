@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawer.closeDrawer(GravityCompat.START);
                 menuItem.setChecked(true);
                 setTitle(menuItem.getTitle());
-                //Toast.makeText(this, "weather", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "temp", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_settings:
                 fragmentClass = null;
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.href_cite:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://lyceum.nstu.ru"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL.HOST));
                 startActivity(browserIntent);
                 break;
             default:
