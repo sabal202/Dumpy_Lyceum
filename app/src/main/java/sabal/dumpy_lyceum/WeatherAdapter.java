@@ -13,7 +13,7 @@ import java.util.List;
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherHolder> {
     private static final String TAG = "CustomAdapter";
 
-    private List<GetDTO> news = new ArrayList<GetDTO>();
+    private List<WeatherDTO> news = new ArrayList<>();
 
     public static class WeatherHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -31,7 +31,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherH
     }
 
 
-    WeatherAdapter(List<GetDTO> news) {
+    WeatherAdapter(List<WeatherDTO> news) {
         this.news = news;
     }
 
@@ -50,11 +50,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherH
     @Override
     public void onBindViewHolder(WeatherAdapter.WeatherHolder newViewHolder, int i) {
         newViewHolder.newTitle.setText("Weather");
-        newViewHolder.newText.setText("Humidity:   "+String.valueOf((int) news.get(i).humidity) + "\nTemperature:   " + String.valueOf(news.get(i).weather));
+        newViewHolder.newText.setText("Humidity:   "+ news.get(i).getMain().getHumidity() + "\nTemperature:   " + news.get(i).getMain().getTemp());
         //newViewHolder.newDate.setText("03.03.2017");
     }
 
-    public void setData(List<GetDTO> data) {
+    public void setData(List<WeatherDTO> data) {
         this.news = data;
     }
 

@@ -7,7 +7,7 @@ repositories {
 }
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "sabal.dumpy_lyceum"
         minSdkVersion 16
