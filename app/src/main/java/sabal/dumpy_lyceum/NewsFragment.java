@@ -10,28 +10,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class NewsFragment extends Fragment {
-    public static final int CONNECTION_TIMEOUT = 10000;
-    public static final int READ_TIMEOUT = 15000;
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
+    private NewsAdapter adapter = new NewsAdapter(new ArrayList<>());
 
     private enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
@@ -39,7 +28,6 @@ public class NewsFragment extends Fragment {
     }
 
     protected LayoutManagerType mCurrentLayoutManagerType;
-    private List<New> news;
     protected RecyclerView mRecyclerView;
     protected RecyclerView.LayoutManager mLayoutManager;
 
@@ -47,11 +35,7 @@ public class NewsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialize dataset, this data would usually come from a local content provider or
-        // remote server.
         initializeData();
-
-
     }
 
     @Override
@@ -114,10 +98,7 @@ public class NewsFragment extends Fragment {
     }
 
     private void initializeAdapter() {
-        RVAdapter adapter = new RVAdapter(news);
-        adapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(adapter);
-
     }
 
     @Override
@@ -127,17 +108,13 @@ public class NewsFragment extends Fragment {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    private class GetJSON extends AsyncTask<String, String, String> {
+    private class GetJSON extends AsyncTask<String, String, NewsDTO> {
         ProgressDialog pdLoading = new ProgressDialog(getActivity());
-        HttpURLConnection conn;
-        URL url = null;
-
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
-            //this method will be running on UI thread
             pdLoading.setMessage("\tLoading...");
             pdLoading.setCancelable(false);
             pdLoading.show();
@@ -145,94 +122,27 @@ public class NewsFragment extends Fragment {
         }
 
         @Override
-        protected String doInBackground(String... strings) {
-            try {
+        protected NewsDTO doInBackground(String... strings) {
+            RestTemplate template = new RestTemplate();
+            template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-                // Enter URL address where your json file resides
-                // Even you can make call to php file which returns json data
-                url = new URL("https://server.skbrii.ru/user/~cwc/lyceum/feed.json");
+            NewsDTO response = template.getForObject(Constants.URL.NEWS, NewsDTO.class);
 
-            } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                return e.toString();
-            }
-            try {
-
-                // Setup HttpURLConnection class to send and receive data from php and mysql
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(READ_TIMEOUT);
-                conn.setConnectTimeout(CONNECTION_TIMEOUT);
-                conn.setRequestMethod("GET");
-
-                // setDoOutput to true as we recieve data from json file
-                conn.setDoOutput(true);
-
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-                return e1.toString();
-            }
-
-            try {
-
-                int response_code = conn.getResponseCode();
-
-                // Check if successful connection made
-                if (response_code == HttpURLConnection.HTTP_OK) {
-
-                    // Read data sent from server
-                    InputStream input = conn.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                    StringBuilder result = new StringBuilder();
-                    String line;
-
-                    while ((line = reader.readLine()) != null) {
-                        result.append(line);
-                    }
-
-                    // Pass data to onPostExecute method
-                    return (result.toString());
-
-                } else {
-
-                    return ("unsuccessful");
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return e.toString();
-            } finally {
-                conn.disconnect();
-            }
+            return response;
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(NewsDTO result) {
+            ArrayList<New> data = result.getItems();
 
-
-            pdLoading.dismiss();
-            List<New> list = new ArrayList<>();
-            pdLoading.dismiss();
-            try {
-
-                JSONArray jArray = new JSONArray(result);
-
-                // Extract data from json and store into ArrayList as class objects
-                for (int i = 0; i < jArray.length(); i++) {
-                    JSONObject json_data = jArray.getJSONObject(i);
-                    New aNew = new New(json_data.getString("title"), json_data.getString("content"), "date");
-                    list.add(aNew);
-                }
-                RVAdapter adapter = new RVAdapter(list);
-                adapter.setData(list);
-                adapter.notifyDataSetChanged();
-                mRecyclerView.setAdapter(adapter);
-
-            } catch (JSONException e) {
-                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+            for (New i: data) {
+                i.setIntrotext(i.getIntrotext().replace("&#8230;", "...")); //replace unparsable characters
             }
 
+            adapter.setData(data);
+            adapter.notifyDataSetChanged();
+
+            pdLoading.dismiss();
         }
     }
 }

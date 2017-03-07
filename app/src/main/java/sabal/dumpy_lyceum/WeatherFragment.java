@@ -20,8 +20,6 @@ import java.util.List;
 
 
 public class WeatherFragment extends Fragment {
-    public static final int CONNECTION_TIMEOUT = 10000;
-    public static final int READ_TIMEOUT = 15000;
     private static final int LAYOUT = R.layout.fragment_weather;
     private List<WeatherDTO> data;
     private String title;

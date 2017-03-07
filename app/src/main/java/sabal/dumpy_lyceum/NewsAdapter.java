@@ -10,10 +10,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewViewHolder> {
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder> {
     private static final String TAG = "CustomAdapter";
 
-    private List<New> news = new ArrayList<New>();
+    private List<New> news = new ArrayList<>();
 
     public static class NewViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -31,7 +31,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewViewHolder> {
     }
 
 
-    RVAdapter(List<New> news) {
+    NewsAdapter(List<New> news) {
         this.news = news;
     }
 
@@ -49,8 +49,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewViewHolder> {
 
     @Override
     public void onBindViewHolder(NewViewHolder newViewHolder, int i) {
-        newViewHolder.newTitle.setText(news.get(i).title);
-        newViewHolder.newText.setText(news.get(i).content);
+        newViewHolder.newTitle.setText(news.get(i).getTitle());
+        newViewHolder.newText.setText(news.get(i).getIntrotext());
         //newViewHolder.newDate.setText("03.03.2017");
     }
 
