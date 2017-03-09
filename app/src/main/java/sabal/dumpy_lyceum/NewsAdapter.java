@@ -2,10 +2,17 @@ package sabal.dumpy_lyceum;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +26,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder>
         CardView cv;
         TextView newTitle;
         TextView newText;
+        ImageView newImage;
+        ProgressBar pg;
         //TextView newDate;
 
         NewViewHolder(View itemView) {
@@ -26,6 +35,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder>
             cv = (CardView) itemView.findViewById(R.id.cv);
             newTitle = (TextView) itemView.findViewById(R.id.weather_title);
             newText = (TextView) itemView.findViewById(R.id.weather_text);
+            newImage = (ImageView) itemView.findViewById(R.id.new_imageView);
+            pg = (ProgressBar) itemView.findViewById(R.id.new_progressBar);
             //newDate = (TextView)itemView.findViewById(R.id.new_date);
         }
     }
@@ -51,6 +62,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder>
     public void onBindViewHolder(NewViewHolder newViewHolder, int i) {
         newViewHolder.newTitle.setText(news.get(i).getTitle());
         newViewHolder.newText.setText(news.get(i).getIntrotext());
+        String URL = news.get(i).getImage();
+        if (!TextUtils.isEmpty(URL))
+            setImage(newViewHolder.newImage, news.get(i).getImage(), newViewHolder.pg);
+        else {
+            newViewHolder.newImage.setVisibility(View.GONE);
+        }
         //newViewHolder.newDate.setText("03.03.2017");
     }
 
@@ -65,5 +82,25 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder>
         } else {
             return 0;
         }
+    }
+
+    private void setImage(ImageView imageView, String imageURL, ProgressBar progressBar) {
+//        Picasso.with(imageView.getContext()).cancelRequest(imageView);
+        progressBar.setVisibility(View.VISIBLE);
+        Picasso.with(imageView.getContext())
+                .load(Constants.URL.HOST + imageURL)
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressBar.setVisibility(View.GONE);
+                        imageView.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(imageView.getContext(), "Error", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }

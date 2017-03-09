@@ -52,6 +52,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherH
         newViewHolder.newTitle.setText("Weather");
         newViewHolder.newText.setText("Humidity:   "+ news.get(i).getMain().getHumidity() + "%" +
                                       "\nTemperature:   " + news.get(i).getMain().getTemp());
+
         //newViewHolder.newDate.setText("03.03.2017");
     }
 
