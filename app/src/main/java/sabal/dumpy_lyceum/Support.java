@@ -6,7 +6,7 @@ import android.text.Html;
  * Created by Valentun on 07.03.2017.
  */
 
-public class Helper {
+public class Support {
     //delete html tags from string input
     public static String stripHtml(String html) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {

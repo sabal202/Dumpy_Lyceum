@@ -16,6 +16,10 @@ import android.view.MenuItem;
 
 import java.util.List;
 
+import sabal.dumpy_lyceum.DTOs.New;
+import sabal.dumpy_lyceum.Fragments.NewsFragment;
+import sabal.dumpy_lyceum.Fragments.WeatherFragment;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout mDrawer;

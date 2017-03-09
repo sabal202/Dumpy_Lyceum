@@ -1,4 +1,4 @@
-package sabal.dumpy_lyceum;
+package sabal.dumpy_lyceum.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

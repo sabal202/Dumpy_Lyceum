@@ -1,4 +1,4 @@
-package sabal.dumpy_lyceum;
+package sabal.dumpy_lyceum.Fragments;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -15,6 +15,14 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+
+import sabal.dumpy_lyceum.Adapters.NewsAdapter;
+import sabal.dumpy_lyceum.Constants;
+import sabal.dumpy_lyceum.DTOs.New;
+import sabal.dumpy_lyceum.DTOs.NewsDTO;
+import sabal.dumpy_lyceum.R;
+
+import static sabal.dumpy_lyceum.Support.stripHtml;
 
 public class NewsFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
@@ -136,7 +144,8 @@ public class NewsFragment extends Fragment {
             ArrayList<New> data = result.getItems();
 
             for (New i: data) {
-                i.setIntrotext(i.getIntrotext().replace("&#8230;", "...")); //replace unparsable characters
+                i.setIntrotext(stripHtml(i.getIntrotext()));
+                i.setTitle(stripHtml(i.getTitle()));
             }
 
             adapter.setData(data);

@@ -1,4 +1,4 @@
-package sabal.dumpy_lyceum;
+package sabal.dumpy_lyceum.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,11 +18,15 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+import sabal.dumpy_lyceum.Constants;
+import sabal.dumpy_lyceum.R;
+import sabal.dumpy_lyceum.Adapters.WeatherAdapter;
+import sabal.dumpy_lyceum.DTOs.WeatherDTO;
+
 
 public class WeatherFragment extends Fragment {
     private static final int LAYOUT = R.layout.fragment_weather;
     private List<WeatherDTO> data;
-    private String title;
     protected Context context;
     protected View view;
     protected RecyclerView mRecyclerView;

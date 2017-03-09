@@ -1,4 +1,4 @@
-package sabal.dumpy_lyceum;
+package sabal.dumpy_lyceum.Adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,12 +10,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import sabal.dumpy_lyceum.R;
+import sabal.dumpy_lyceum.DTOs.WeatherDTO;
+
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherHolder> {
     private static final String TAG = "CustomAdapter";
 
     private List<WeatherDTO> news = new ArrayList<>();
 
-    public static class WeatherHolder extends RecyclerView.ViewHolder {
+    static class WeatherHolder extends RecyclerView.ViewHolder {
         CardView cv;
         TextView newTitle;
         TextView newText;
@@ -31,7 +34,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherH
     }
 
 
-    WeatherAdapter(List<WeatherDTO> news) {
+    public WeatherAdapter(List<WeatherDTO> news) {
         this.news = news;
     }
 
