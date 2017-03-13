@@ -1,5 +1,7 @@
 package sabal.dumpy_lyceum.Adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,8 +12,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import sabal.dumpy_lyceum.R;
 import sabal.dumpy_lyceum.DTOs.WeatherDTO;
+import sabal.dumpy_lyceum.NewDetailActivity;
+import sabal.dumpy_lyceum.R;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherHolder> {
     private static final String TAG = "CustomAdapter";
@@ -22,14 +25,13 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherH
         CardView cv;
         TextView newTitle;
         TextView newText;
-        //TextView newDate;
-
+        View mView;
         WeatherHolder(View itemView) {
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.weather_cv);
             newTitle = (TextView) itemView.findViewById(R.id.weather_title);
             newText = (TextView) itemView.findViewById(R.id.weather_text);
-            //newDate = (TextView)itemView.findViewById(R.id.new_date);
+            mView = itemView;
         }
     }
 
@@ -55,8 +57,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherH
         newViewHolder.newTitle.setText("Weather");
         newViewHolder.newText.setText("Humidity:   "+ news.get(i).getMain().getHumidity() + "%" +
                                       "\nTemperature:   " + news.get(i).getMain().getTemp());
+        newViewHolder.mView.setOnClickListener(view -> {
+            Context context = view.getContext();
+            Intent intent = new Intent(context, NewDetailActivity.class);
+            intent.putExtra(NewDetailActivity.EXTRA_TITLE, newViewHolder.newTitle.getText());
+            intent.putExtra(NewDetailActivity.EXTRA_TEXT, newViewHolder.newText.getText());
+            context.startActivity(intent);
 
-        //newViewHolder.newDate.setText("03.03.2017");
+        });
     }
 
     public void setData(List<WeatherDTO> data) {

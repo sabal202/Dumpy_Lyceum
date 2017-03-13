@@ -20,7 +20,6 @@ import sabal.dumpy_lyceum.DTOs.New;
 import sabal.dumpy_lyceum.Fragments.NewsFragment;
 import sabal.dumpy_lyceum.Fragments.WeatherFragment;
 
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         rv = (RecyclerView) findViewById(R.id.rv);
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            NewsFragment fragment = new NewsFragment();
+            WeatherFragment fragment = new WeatherFragment();
             transaction.replace(R.id.sample_content_fragment, fragment);
             transaction.commit();
         }
@@ -70,20 +69,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawer.closeDrawer(GravityCompat.START);
                 menuItem.setChecked(true);
                 setTitle(menuItem.getTitle());
-                //Toast.makeText(this, "news", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_weather:
                 fragmentClass = WeatherFragment.class;
                 drawer.closeDrawer(GravityCompat.START);
                 menuItem.setChecked(true);
                 setTitle(menuItem.getTitle());
-                //Toast.makeText(this, "temp", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_settings:
                 fragmentClass = null;
                 drawer.closeDrawer(GravityCompat.START);
-
-                //Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.href_cite:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL.HOST));
@@ -103,12 +98,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // Insert the fragment by replacing any existing fragment
-
-
-        // Highlight the selected item has been done by NavigationView
-
         // Close the navigation drawer
         mDrawer.closeDrawers();
         return true;
