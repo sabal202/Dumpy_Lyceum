@@ -1,5 +1,6 @@
 package sabal.dumpy_lyceum.Adapters;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -11,18 +12,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.curioustechizen.ago.RelativeTimeTextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import sabal.dumpy_lyceum.Constants;
 import sabal.dumpy_lyceum.DTOs.New;
 import sabal.dumpy_lyceum.R;
+import sabal.dumpy_lyceum.Support;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder> {
-    private static final String TAG = "CustomAdapter";
 
     private List<New> news = new ArrayList<>();
 
@@ -32,7 +35,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder>
         TextView newText;
         ImageView newImage;
         ProgressBar pg;
-        //TextView newDate;
+        RelativeTimeTextView timeView;
 
         NewViewHolder(View itemView) {
             super(itemView);
@@ -41,7 +44,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder>
             newText = (TextView) itemView.findViewById(R.id.weather_text);
             newImage = (ImageView) itemView.findViewById(R.id.new_imageView);
             pg = (ProgressBar) itemView.findViewById(R.id.new_progressBar);
-            //newDate = (TextView)itemView.findViewById(R.id.new_date);
+            timeView = (RelativeTimeTextView) itemView.findViewById(R.id.timestamp);
         }
     }
 
@@ -64,15 +67,22 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder>
 
     @Override
     public void onBindViewHolder(NewViewHolder newViewHolder, int i) {
-        newViewHolder.newTitle.setText(news.get(i).getTitle());
-        newViewHolder.newText.setText(news.get(i).getIntrotext());
-        String URL = news.get(i).getImage();
+        New item = news.get(i);
+        newViewHolder.newTitle.setText(item.getTitle());
+        newViewHolder.newText.setText(item.getIntroText());
+        String URL = item.getImage();
         if (!TextUtils.isEmpty(URL))
-            setImage(newViewHolder.newImage, news.get(i).getImage(), newViewHolder.pg);
+            setImage(newViewHolder.newImage, item.getImage(), newViewHolder.pg);
         else {
             newViewHolder.newImage.setVisibility(View.GONE);
         }
-        //newViewHolder.newDate.setText("03.03.2017");
+
+        try {
+            newViewHolder.timeView.setReferenceTime(Support.getUnixTImeFromString(item.getCreationTime()));
+        } catch (ParseException e) {
+            Snackbar.make(newViewHolder.cv.getRootView(), "Can not parse date", Snackbar.LENGTH_LONG)
+                    .show();
+        }
     }
 
     public void setData(List<New> data) {
@@ -89,7 +99,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder>
     }
 
     private void setImage(ImageView imageView, String imageURL, ProgressBar progressBar) {
-//        Picasso.with(imageView.getContext()).cancelRequest(imageView);
         progressBar.setVisibility(View.VISIBLE);
         Picasso.with(imageView.getContext())
                 .load(Constants.URL.HOST + imageURL)

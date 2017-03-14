@@ -2,6 +2,9 @@ package sabal.dumpy_lyceum;
 
 import android.text.Html;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 /**
  * Created by Valentun on 07.03.2017.
  */
@@ -14,5 +17,10 @@ public class Support {
         } else {
             return Html.fromHtml(html).toString();
         }
+    }
+
+    public static long getUnixTImeFromString (String input) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("YY-MM-dd HH:mm:ss");
+        return format.parse(input).getTime();
     }
 }

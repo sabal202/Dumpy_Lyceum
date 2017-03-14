@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import sabal.dumpy_lyceum.Adapters.NewsAdapter;
 import sabal.dumpy_lyceum.Constants;
@@ -132,7 +134,15 @@ public class NewsFragment extends Fragment {
         @Override
         protected NewsDTO doInBackground(String... strings) {
             RestTemplate template = new RestTemplate();
-            template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+            MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+
+            List<MediaType> myMediaTypes = new ArrayList<> ();
+            myMediaTypes.addAll (converter.getSupportedMediaTypes ());
+            myMediaTypes.add (MediaType.parseMediaType ("text/html; charset=UTF-8"));
+
+            converter.setSupportedMediaTypes(myMediaTypes);
+            template.getMessageConverters().add(converter);
 
             NewsDTO response = template.getForObject(Constants.URL.NEWS, NewsDTO.class);
 
@@ -144,7 +154,7 @@ public class NewsFragment extends Fragment {
             ArrayList<New> data = result.getItems();
 
             for (New i: data) {
-                i.setIntrotext(stripHtml(i.getIntrotext()));
+                i.setIntroText(stripHtml(i.getIntroText()));
                 i.setTitle(stripHtml(i.getTitle()));
             }
 

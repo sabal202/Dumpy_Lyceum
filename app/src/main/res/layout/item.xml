@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -29,14 +30,14 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
                 android:text="Title"
                 android:textAlignment="center"
                 android:textSize="24sp"
                 card_view:layout_constraintHorizontal_bias="0.5"
                 card_view:layout_constraintLeft_toLeftOf="parent"
                 card_view:layout_constraintRight_toRightOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent" />
+                card_view:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="32dp" />
 
             <TextView
                 android:id="@+id/weather_text"
@@ -46,7 +47,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Text"
+                android:text="intro"
                 card_view:layout_constraintLeft_toLeftOf="parent"
                 card_view:layout_constraintRight_toRightOf="parent"
                 card_view:layout_constraintTop_toBottomOf="@+id/weather_title" />
@@ -66,17 +67,6 @@
                 card_view:layout_constraintRight_toRightOf="parent"
                 card_view:layout_constraintTop_toBottomOf="@+id/weather_text" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/new_date"
-                android:layout_alignParentTop="false"
-                android:layout_alignParentEnd="false"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="false"
-                android:layout_alignTop="@+id/weather_text"
-                android:layout_marginTop="24dp" />
-
             <ImageView
                 android:id="@+id/new_imageView"
                 android:layout_width="wrap_content"
@@ -91,6 +81,15 @@
                 card_view:layout_constraintRight_toRightOf="@+id/new_progressBar"
                 card_view:layout_constraintTop_toBottomOf="@+id/new_progressBar"
                 card_view:srcCompat="@mipmap/ic_launcher" />
+
+            <com.github.curioustechizen.ago.RelativeTimeTextView
+                android:id="@+id/timestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:relative_time_prefix="Completed " />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

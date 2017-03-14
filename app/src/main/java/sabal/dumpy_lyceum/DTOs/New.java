@@ -9,10 +9,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class New {
 
     private String title;
-    private String introtext;
-    private String fulltext;
+    private String introText;
+    private String fullText;
     @JsonProperty("imageMedium")
     private String image;
+    @JsonProperty("created")
+    private String creationTime;
 
     public New() {
     }
@@ -34,20 +36,28 @@ public class New {
         this.title = title;
     }
 
-    public String getIntrotext() {
-        return introtext;
+    public String getIntroText() {
+        return introText;
     }
 
-    public void setIntrotext(String introtext) {
-        this.introtext = introtext;
+    public void setIntroText(String introText) {
+        this.introText = introText;
     }
 
-    public String getFulltext() {
-        return fulltext;
+    public String getFullText() {
+        return fullText;
     }
 
-    public void setFulltext(String fulltext) {
-        this.fulltext = fulltext;
+    public void setFullText(String fullText) {
+        this.fullText = fullText;
+    }
+
+    public String getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(String creationTime) {
+        this.creationTime = creationTime;
     }
 }
 
