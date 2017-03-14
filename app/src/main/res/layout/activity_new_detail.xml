@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:id="@+id/new_detail_text"
                 android:layout_height="wrap_content"
-                android:text="ыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыы" />
+                android:text="text" />
 
         </LinearLayout>
 

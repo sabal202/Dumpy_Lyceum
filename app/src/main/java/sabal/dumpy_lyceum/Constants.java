@@ -15,4 +15,7 @@ public class Constants {
 
     private static final String API_KEY = "f9aa0a5ed0ae92439b4f09ad124206c1";
     private static final String CITY_NAME = "Novosibirsk"; //временно
+
+    public static final String EXTRA_TITLE = "new_title";
+    public static final String EXTRA_TEXT = "new_text";
 }

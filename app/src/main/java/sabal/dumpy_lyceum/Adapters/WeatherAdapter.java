@@ -16,8 +16,10 @@ import sabal.dumpy_lyceum.DTOs.WeatherDTO;
 import sabal.dumpy_lyceum.NewDetailActivity;
 import sabal.dumpy_lyceum.R;
 
+import static sabal.dumpy_lyceum.Constants.EXTRA_TEXT;
+import static sabal.dumpy_lyceum.Constants.EXTRA_TITLE;
+
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherHolder> {
-    private static final String TAG = "CustomAdapter";
 
     private List<WeatherDTO> news = new ArrayList<>();
 
@@ -60,8 +62,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherH
         newViewHolder.mView.setOnClickListener(view -> {
             Context context = view.getContext();
             Intent intent = new Intent(context, NewDetailActivity.class);
-            intent.putExtra(NewDetailActivity.EXTRA_TITLE, newViewHolder.newTitle.getText());
-            intent.putExtra(NewDetailActivity.EXTRA_TEXT, newViewHolder.newText.getText());
+            intent.putExtra(EXTRA_TITLE, newViewHolder.newTitle.getText());
+            intent.putExtra(EXTRA_TEXT, newViewHolder.newText.getText());
             context.startActivity(intent);
 
         });

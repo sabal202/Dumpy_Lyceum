@@ -9,12 +9,12 @@ import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
+
+import static sabal.dumpy_lyceum.Constants.EXTRA_TEXT;
+import static sabal.dumpy_lyceum.Constants.EXTRA_TITLE;
 
 public class NewDetailActivity extends AppCompatActivity {
-
-    public static final String EXTRA_TITLE = "new_title";
-    public static final String EXTRA_TEXT = "new_text";
 
 
     @Override
@@ -41,7 +41,7 @@ public class NewDetailActivity extends AppCompatActivity {
 
     private void loadBackdrop() {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(this).load(R.drawable.backdrop).centerCrop().into(imageView);
+        Picasso.with(this).load(R.drawable.backdrop).into(imageView);
     }
 
     @Override
