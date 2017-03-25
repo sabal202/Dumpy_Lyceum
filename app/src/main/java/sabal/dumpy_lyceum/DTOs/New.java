@@ -1,30 +1,23 @@
 package sabal.dumpy_lyceum.DTOs;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class New {
 
     private String title;
     private String introText;
     private String fullText;
-    @JsonProperty("imageMedium")
-    private String image;
-    @JsonProperty("created")
-    private String creationTime;
+    private String imageURL;
 
-    public New() {
+    private String date;
+
+    public New(String title, String introText, String date, String imageURL) {
+        this.title = title;
+        this.introText = introText;
+        this.date = date;
+        this.imageURL = imageURL;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
+    public String getImageURL() {
+        return imageURL;
     }
 
 
@@ -32,32 +25,24 @@ public class New {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getIntroText() {
         return introText;
-    }
-
-    public void setIntroText(String introText) {
-        this.introText = introText;
     }
 
     public String getFullText() {
         return fullText;
     }
 
-    public void setFullText(String fullText) {
-        this.fullText = fullText;
+    public String getDate() {
+        return date;
     }
 
-    public String getCreationTime() {
-        return creationTime;
+    public void setIntroText(String introText) {
+        this.introText = introText;
     }
 
-    public void setCreationTime(String creationTime) {
-        this.creationTime = creationTime;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
 

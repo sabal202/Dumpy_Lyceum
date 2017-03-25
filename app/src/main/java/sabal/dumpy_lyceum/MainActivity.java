@@ -4,28 +4,22 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import java.util.List;
-
-import sabal.dumpy_lyceum.DTOs.New;
 import sabal.dumpy_lyceum.Fragments.NewsFragment;
 import sabal.dumpy_lyceum.Fragments.WeatherFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
-    private NavigationView nvDrawer;
-    private List<New> news;
-    private RecyclerView rv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +28,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         initializeNavDriver(toolbar);
-        rv = (RecyclerView) findViewById(R.id.rv);
+
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            WeatherFragment fragment = new WeatherFragment();
-            transaction.replace(R.id.sample_content_fragment, fragment);
+            NewsFragment fragment = new NewsFragment();
+            transaction.add(R.id.sample_content_fragment, fragment);
             transaction.commit();
         }
 
@@ -62,23 +57,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         Class fragmentClass = null;
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         switch (menuItem.getItemId()) {
             case R.id.nav_news:
                 fragmentClass = NewsFragment.class;
-                drawer.closeDrawer(GravityCompat.START);
-                menuItem.setChecked(true);
-                setTitle(menuItem.getTitle());
                 break;
             case R.id.nav_weather:
                 fragmentClass = WeatherFragment.class;
-                drawer.closeDrawer(GravityCompat.START);
-                menuItem.setChecked(true);
-                setTitle(menuItem.getTitle());
                 break;
             case R.id.nav_settings:
                 fragmentClass = null;
-                drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.href_cite:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL.HOST));
@@ -86,19 +73,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             default:
                 fragmentClass = NewsFragment.class;
-                menuItem.setChecked(true);
-                setTitle(menuItem.getTitle());
                 break;
         }
+
+        setTitle(menuItem.getTitle());
+        mDrawer.closeDrawer(GravityCompat.START);
         try {
-            //fragment = (Fragment) fragmentClass.newInstance();
+            Fragment fragment = (Fragment) fragmentClass.newInstance();
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.sample_content_fragment, (android.support.v4.app.Fragment) fragmentClass.newInstance()).commit();
-            //Toast.makeText(this, "replaced", Toast.LENGTH_SHORT).show();
+            fragmentManager.beginTransaction().replace(R.id.sample_content_fragment, fragment)
+                    .commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // Close the navigation drawer
+
         mDrawer.closeDrawers();
         return true;
     }
@@ -111,5 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 }

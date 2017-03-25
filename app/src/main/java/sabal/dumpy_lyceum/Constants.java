@@ -7,9 +7,9 @@ package sabal.dumpy_lyceum;
 public class Constants {
 
     public static class URL {
-         public static final String HOST = "http://lyceum.nstu.ru/";
+        public static final String HOST = "http://lyceum.nstu.ru";
          public static final String WEATHER_HOST = "http://api.openweathermap.org/data/2.5/";
-         public static final String NEWS = HOST + "novosti?format=json";
+        public static final String NEWS = HOST + "/novosti/";
          public static final String CURRENT_WEATHER = WEATHER_HOST + "weather?appid=" + API_KEY + "&units=metric" + "&q=" + CITY_NAME;
     }
 

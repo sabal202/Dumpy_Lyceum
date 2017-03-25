@@ -10,36 +10,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import sabal.dumpy_lyceum.Adapters.NewsAdapter;
 import sabal.dumpy_lyceum.Constants;
 import sabal.dumpy_lyceum.DTOs.New;
-import sabal.dumpy_lyceum.DTOs.NewsDTO;
 import sabal.dumpy_lyceum.R;
 
-import static sabal.dumpy_lyceum.Support.stripHtml;
+import static sabal.dumpy_lyceum.Utils.parseNewsFromHtml;
+import static sabal.dumpy_lyceum.Utils.stripHtml;
 
 public class NewsFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
-    private NewsAdapter adapter = new NewsAdapter(new ArrayList<>());
-
-    private enum LayoutManagerType {
-        GRID_LAYOUT_MANAGER,
-        LINEAR_LAYOUT_MANAGER
-    }
-
     protected LayoutManagerType mCurrentLayoutManagerType;
     protected RecyclerView mRecyclerView;
     protected RecyclerView.LayoutManager mLayoutManager;
+    private NewsAdapter adapter = new NewsAdapter(new ArrayList<>());
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,7 +112,12 @@ public class NewsFragment extends Fragment {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    private class GetJSON extends AsyncTask<String, String, NewsDTO> {
+    private enum LayoutManagerType {
+        GRID_LAYOUT_MANAGER,
+        LINEAR_LAYOUT_MANAGER
+    }
+
+    private class GetJSON extends AsyncTask<String, String, ArrayList<New>> {
         ProgressDialog pdLoading = new ProgressDialog(getActivity());
 
         @Override
@@ -132,33 +131,30 @@ public class NewsFragment extends Fragment {
         }
 
         @Override
-        protected NewsDTO doInBackground(String... strings) {
-            RestTemplate template = new RestTemplate();
+        protected ArrayList<New> doInBackground(String... strings) {
 
-            MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+            ArrayList<New> response = null;
 
-            List<MediaType> myMediaTypes = new ArrayList<> ();
-            myMediaTypes.addAll (converter.getSupportedMediaTypes ());
-            myMediaTypes.add (MediaType.parseMediaType ("text/html; charset=UTF-8"));
-
-            converter.setSupportedMediaTypes(myMediaTypes);
-            template.getMessageConverters().add(converter);
-
-            NewsDTO response = template.getForObject(Constants.URL.NEWS, NewsDTO.class);
+            try {
+                Document doc = Jsoup.connect(Constants.URL.NEWS).get();
+                response = parseNewsFromHtml(doc);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(pdLoading.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
 
             return response;
         }
 
         @Override
-        protected void onPostExecute(NewsDTO result) {
-            ArrayList<New> data = result.getItems();
+        protected void onPostExecute(ArrayList<New> result) {
 
-            for (New i: data) {
+            for (New i : result) {
                 i.setIntroText(stripHtml(i.getIntroText()));
                 i.setTitle(stripHtml(i.getTitle()));
             }
 
-            adapter.setData(data);
+            adapter.setData(result);
             adapter.notifyDataSetChanged();
 
             pdLoading.dismiss();
