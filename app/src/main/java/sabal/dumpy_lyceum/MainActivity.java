@@ -35,13 +35,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             NewsFragment fragment = new NewsFragment();
-            transaction.add(R.id.sample_content_fragment, fragment);
+            transaction.add(R.id.main_container, fragment);
             transaction.commit();
         }
 
     }
-
-
 
     @Override
     public void onBackPressed() {
@@ -81,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         try {
             Fragment fragment = (Fragment) fragmentClass.newInstance();
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.sample_content_fragment, fragment)
+            fragmentManager.beginTransaction().replace(R.id.main_container, fragment)
                     .commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,4 +100,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.getMenu().getItem(0).setChecked(true);
     }
+
 }

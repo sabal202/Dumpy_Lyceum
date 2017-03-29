@@ -1,5 +1,8 @@
 package sabal.dumpy_lyceum.Adapters;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sabal.dumpy_lyceum.DTOs.New;
+import sabal.dumpy_lyceum.Fragments.ShowNewFragment;
 import sabal.dumpy_lyceum.R;
 
 import static sabal.dumpy_lyceum.Constants.URL.HOST;
@@ -26,9 +30,11 @@ import static sabal.dumpy_lyceum.Constants.URL.HOST;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder> {
 
     private List<New> news = new ArrayList<>();
+    private AppCompatActivity activity;
 
-    public NewsAdapter(List<New> news) {
+    public NewsAdapter(List<New> news, AppCompatActivity activity) {
         this.news = news;
+        this.activity = activity;
     }
 
     @Override
@@ -45,8 +51,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder>
 
     @Override
     public void onBindViewHolder(NewViewHolder newViewHolder, int i) {
+        New item = news.get(i);
         try {
-            newViewHolder.bind(news.get(i));
+            newViewHolder.bind(item);
+            newViewHolder.itemView.setOnClickListener(view -> {
+                ShowNewFragment fragment = new ShowNewFragment(item.getLink());
+                FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.main_container, fragment).addToBackStack(null).commit();
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -89,10 +102,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewViewHolder>
             newTitle.setText(newItem.getTitle());
             newText.setText(newItem.getIntroText());
 
-            if (newItem.getImageURL() != null) {
+            if (newItem.getMainImage() != null) {
                 pg.setVisibility(View.VISIBLE);
                 Picasso.with(newImage.getContext())
-                        .load(HOST + newItem.getImageURL())
+                        .load(HOST + newItem.getMainImage())
                         .into(newImage, new Callback() {
                             @Override
                             public void onSuccess() {

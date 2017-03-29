@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,14 +34,8 @@ public class NewsFragment extends Fragment {
     protected LayoutManagerType mCurrentLayoutManagerType;
     protected RecyclerView mRecyclerView;
     protected RecyclerView.LayoutManager mLayoutManager;
-    private NewsAdapter adapter = new NewsAdapter(new ArrayList<>());
+    private NewsAdapter adapter;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        initializeData();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +58,12 @@ public class NewsFragment extends Fragment {
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
         initializeAdapter();
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        new NewsFragment.GetJSON().execute();
+        super.onStart();
     }
 
     /**
@@ -97,11 +98,9 @@ public class NewsFragment extends Fragment {
         mRecyclerView.scrollToPosition(scrollPosition);
     }
 
-    private void initializeData() {
-        new NewsFragment.GetJSON().execute();
-    }
 
     private void initializeAdapter() {
+        adapter = new NewsAdapter(new ArrayList<>(), (AppCompatActivity) getActivity());
         mRecyclerView.setAdapter(adapter);
     }
 
